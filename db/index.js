@@ -51,6 +51,8 @@ async function getAllUsers() {
   
   async function updatePost(postId, fields ={}) {
      
+      const { tags } = fields; 
+      delete fields.tags;
      
       const setString = Object.keys(fields).map(
         (key, index) => `"${ key }"=$${ index + 1 }`
@@ -67,11 +69,11 @@ async function getAllUsers() {
         `, Object.values(fields));
       }
   
-      if (fields.tags === undefined) {
+      if (tags === undefined) {
         return await getPostById(postId);
       }
   
-      const tagList = await createTags(fields.tags);
+      const tagList = await createTags(tags);
       const tagListIdString = tagList.map(
         tag => `${ tag.id }`
       ).join(', ');
